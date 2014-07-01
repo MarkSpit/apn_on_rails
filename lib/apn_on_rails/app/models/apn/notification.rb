@@ -59,7 +59,15 @@ class APN::Notification < APN::Base
     end
     if self.custom_properties
       self.custom_properties.each do |key,value|
-        result["#{key}"] = "#{value}"
+        if(key == 'aps')
+          if(value.is_a? Hash)
+            value.each do |k,v|
+                result['aps']["#{k}"] = "#{v}"
+            end
+          end
+        else
+          result["#{key}"] = "#{value}"
+        end
       end
     end
     result
